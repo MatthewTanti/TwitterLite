@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+var username = document.getElementById("username");
+var content = document.getElementById("content");
+  $("#tweet").click(function(){
+	var request = $.ajax({
+		url: "../twitterlite-ws-1.0-SNAPSHOT/tweet",
+		type: "POST",
+		data: { Username : username.value , Content : content.value},
+		dataType: "html"
+	});
+  });
+  
+  
+  $("#all").click(function(){
+	var request = $.ajax({
+		url: "../twitterlite-ws-1.0-SNAPSHOT/messages",
+		type: "GET",
+		data: { offset : 0 , limit : 0},
+		dataType: "html",
+		success : function(text){
+			response = text;
+		}
+	});
+	
+	request.fail(function( jqXHR, textStatus ) {
+  alert( "Request failed: " + textStatus );
+});
+	document.getElementById("allPosts").innerHTML = response;
+  });
+  
+});
+</script>
+</head>
+<body>
+
+<h3>Twitter Lite</h3>
+
+<span>Username: </span><input typ="text" id="username" >
+
+<span> Text Content: </span><textarea id="content"></textarea>
+
+<input type="button" value="Tweet" id="tweet">
+<input type="button" value="View all posts" id="all">
+
+<div id ="allPosts">
+
+</div>
+
+</body>
+</html>
+
